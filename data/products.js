@@ -1,14 +1,14 @@
-import { formatCurrency } from '../scripts/utils/money.js';
+import { formatCurrency } from "../scripts/utils/money.js";
 
 export function getProduct(productId) {
   let matchingProduct;
 
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
-    return matchingProduct;
+  products.forEach((product) => {
+    if (product.id === productId) {
+      matchingProduct = product;
+    }
+  });
+  return matchingProduct;
 }
 
 class Product {
@@ -84,17 +84,23 @@ const object3 = {
 export let products = [];
 
 export function loadProductsFetch() {
-  const promise = fetch('https://supersimplebackend.dev/products').then((response) => {
-    return response.json()
-  }).then((productsData) => {
-    products = productsData.map((productDetails) => {
-      if(productDetails.type === "clothing") {
-        return new Clothing(productDetails);
-      }
-      return new Product(productDetails);
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      return response.json();
+    })
+    .then((productsData) => {
+      products = productsData.map((productDetails) => {
+        if (productDetails.type === "clothing") {
+          return new Clothing(productDetails);
+        }
+        return new Product(productDetails);
+      });
+
+      console.log("load Products");
+    })
+    .catch((e) => {
+      console.log("unexpected error. Please try again later.");
     });
-    console.log('load Products');
-  })
   return promise;
 }
 /*
@@ -106,18 +112,18 @@ loadProductsFetch().then(() => {
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
 
-  xhr.addEventListener('load', () => {
+  xhr.addEventListener("load", () => {
     products = JSON.parse(xhr.response).map((productDetails) => {
-      if(productDetails.type === "clothing") {
+      if (productDetails.type === "clothing") {
         return new Clothing(productDetails);
       }
       return new Product(productDetails);
     });
-    console.log('load Products');
+    console.log("load Products");
     fun();
-  })
+  });
 
-  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();
 }
 
@@ -788,4 +794,3 @@ export const products = [
   return new Product(productDetails);
 });
 */
-
